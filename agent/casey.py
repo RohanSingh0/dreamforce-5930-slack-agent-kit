@@ -17,6 +17,7 @@ from agent.tools import (
     create_support_ticket_tool,
     lookup_user_permissions_tool,
     mark_resolved_tool,
+    post_resolution_card_tool,
     search_knowledge_base_tool,
     trigger_password_reset_tool,
 )
@@ -56,6 +57,7 @@ casey_tools_server = create_sdk_mcp_server(
     tools=[
         add_emoji_reaction_tool,
         ask_agentforce_tool,
+        post_resolution_card_tool,
         check_system_status_tool,
         create_support_ticket_tool,
         lookup_user_permissions_tool,
@@ -70,6 +72,7 @@ SLACK_MCP_URL = "https://mcp.slack.com/mcp"
 CASEY_TOOLS = [
     "add_emoji_reaction",
     "ask_agentforce_about_product_issue",
+    "post_resolution_card",
     "check_system_status",
     "create_support_ticket",
     "lookup_user_permissions",
