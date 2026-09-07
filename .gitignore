@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.sample
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+logs/
+.slack/apps.json
+.slack/apps.dev.json
