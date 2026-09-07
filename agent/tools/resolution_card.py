@@ -1,3 +1,6 @@
+import json
+import os
+
 from claude_agent_sdk import tool
 
 from agent.cards import build_resolution_card
@@ -28,12 +31,34 @@ from agent.context import casey_deps_var
 )
 async def post_resolution_card_tool(args):
     deps = casey_deps_var.get()
+    rep_channel = os.environ.get("REP_CHANNEL", "").strip()
+
+    blocks = build_resolution_card(
+        origin=json.dumps({"c": deps.channel_id, "t": deps.thread_ts}),
+        **args,
+    )
+
     await deps.client.chat_postMessage(
-        channel=deps.channel_id,
-        thread_ts=deps.thread_ts,
-        blocks=build_resolution_card(**args),
+        channel=rep_channel or deps.channel_id,
+        # top-level in the rep channel; in-thread if there is no rep channel
+        **({} if rep_channel else {"thread_ts": deps.thread_ts}),
+        blocks=blocks,
         text=f"Resolution ready for review — {args['customer_name']}",
     )
+
     return {
-        "content": [{"type": "text", "text": "Card posted. Do not repeat the draft."}]
+        "content": [
+            {
+                "type": "text",
+                "text": (
+                    "Card posted to the rep channel — the customer cannot see it. "
+                    "Your next and final message is posted verbatim into the "
+                    "customer's thread; it is not a report back to an operator. "
+                    "Write ONE neutral sentence saying their issue is with the team "
+                    "and someone will follow up. Do not summarise what you did, do "
+                    "not list the steps you took, and do not reveal warranty, defect "
+                    "or part details."
+                ),
+            }
+        ]
     }

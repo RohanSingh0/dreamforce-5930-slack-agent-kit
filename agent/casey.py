@@ -109,7 +109,18 @@ async def run_casey_agent(
             url=SLACK_MCP_URL,
             headers={"Authorization": f"Bearer {deps.user_token}"},
         )
-        allowed_tools.append("mcp__slack-mcp__*")
+        allowed_tools.extend(
+            [
+                "mcp__slack-mcp__slack_search_public",
+                "mcp__slack-mcp__slack_search_public_and_private",
+                "mcp__slack-mcp__slack_search_channels",
+                "mcp__slack-mcp__slack_search_users",
+                "mcp__slack-mcp__slack_read_canvas",
+                "mcp__slack-mcp__slack_read_channel",
+                "mcp__slack-mcp__slack_read_thread",
+                "mcp__slack-mcp__slack_read_user_profile",
+            ]
+        )
 
     options = ClaudeAgentOptions(
         system_prompt=CASEY_SYSTEM_PROMPT,

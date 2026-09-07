@@ -1,3 +1,4 @@
+import os
 import re
 from logging import Logger
 
@@ -8,6 +9,7 @@ from slack_bolt.context.set_status.async_set_status import AsyncSetStatus
 from slack_sdk.web.async_client import AsyncWebClient
 
 from agent import CaseyDeps, run_casey_agent
+from listeners.customer_reply import vet_customer_reply
 from listeners.views.feedback_builder import build_feedback_blocks
 from thread_context import session_store
 
@@ -74,6 +76,16 @@ async def handle_app_mentioned(
         )
 
         # Stream response in thread with feedback buttons
+        if os.environ.get("REP_CHANNEL", "").strip():
+            original = response_text
+            response_text, replaced = vet_customer_reply(response_text)
+            if replaced:
+                logger.warning(
+                    "Replaced the customer-facing reply (%s): %r",
+                    replaced,
+                    original[:200],
+                )
+
         streamer = await say_stream()
         await streamer.append(markdown_text=response_text)
         feedback_blocks = build_feedback_blocks()

@@ -2,6 +2,7 @@ def build_resolution_card(
     *,
     customer_name,
     draft_message,
+    origin="",
     product_summary="",
     warranty_status="",
     defect_status="",
@@ -49,13 +50,13 @@ def build_resolution_card(
                     "action_id": "resolution_approve",
                     "style": "primary",
                     "text": {"type": "plain_text", "text": "Approve & Send"},
-                    "value": "ok",
+                    "value": origin,
                 },
                 {
                     "type": "button",
                     "action_id": "resolution_edit",
                     "text": {"type": "plain_text", "text": "Edit"},
-                    "value": "ok",
+                    "value": origin,
                 },
             ],
         }
