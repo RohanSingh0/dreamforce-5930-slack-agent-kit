@@ -12,6 +12,7 @@ from agent.context import casey_deps_var
 from agent.deps import CaseyDeps
 from agent.tools import (
     add_emoji_reaction_tool,
+    ask_agentforce_tool,
     check_system_status_tool,
     create_support_ticket_tool,
     lookup_user_permissions_tool,
@@ -103,6 +104,7 @@ casey_tools_server = create_sdk_mcp_server(
     version="1.0.0",
     tools=[
         add_emoji_reaction_tool,
+        ask_agentforce_tool,
         check_system_status_tool,
         create_support_ticket_tool,
         lookup_user_permissions_tool,
@@ -116,6 +118,7 @@ SLACK_MCP_URL = "https://mcp.slack.com/mcp"
 
 CASEY_TOOLS = [
     "add_emoji_reaction",
+    "ask_agentforce_about_product_issue",
     "check_system_status",
     "create_support_ticket",
     "lookup_user_permissions",
